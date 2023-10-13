@@ -1,0 +1,49 @@
+from PIL import Image
+import numpy as np
+
+inicjaly = Image.open("inicjaly.bmp")
+
+t_inicjaly = np.asarray(inicjaly)
+
+def rysuj_ramke_w_obrazie(obraz, grub):
+    tab_obraz = np.asarray(obraz)*1
+    h, w = tab_obraz.shape
+    for i in range(h):
+        for j in range(grub):
+            tab_obraz[i][j]=0
+        for j in range(w-grub, w):
+            tab_obraz[i][j]=0
+    for i in range(w):
+        for j in range(grub):
+            tab_obraz[j][i]=0
+        for j in range(h-grub, h):
+            tab_obraz[j][i]=0
+    tab = tab_obraz.astype(bool)
+    return Image.fromarray(tab)
+
+inicjaly_paski = rysuj_ramke_w_obrazie(inicjaly, 10)
+
+inicjaly_paski.show()
+
+ramka10 = rysuj_ramke_w_obrazie(inicjaly, 10)
+ramka5 = rysuj_ramke_w_obrazie(inicjaly, 5)
+ramka10.save("ramka10.bmp")
+ramka5.save("ramka5.bmp")
+
+def ramka_czarno_biala(obraz, grub):
+    tab_obraz = np.asarray(obraz) * 1
+    h, w = tab_obraz.shape
+    for i in range(h):
+        if h%grub*2 is in range(grub, grub*2):
+            for j in range(grub):
+                tab_obraz[i][j] = 0
+        if h % grub * 2 is in range(grub, grub * 2):
+            for j in range(w - grub, w):
+                tab_obraz[i][j] = 0
+    for i in range(w):
+        for j in range(grub):
+            tab_obraz[j][i] = 0
+        for j in range(h - grub, h):
+            tab_obraz[j][i] = 0
+    tab = tab_obraz.astype(bool)
+    return Image.fromarray(tab)
