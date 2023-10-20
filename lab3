@@ -1,0 +1,94 @@
+from PIL import Image
+import numpy as np
+
+#zadanie 1
+
+def fun1(w, h, grub, kolor):
+    t = (h, w)
+    tab = np.zeros(t, dtype=np.uint8)
+    ile = 0
+    m = min(w, h)
+    do = int(m / (2 * grub))
+    for i in range(0, do):
+        tab[ile * grub: h - (ile * grub), ile * grub: w - (ile * grub)] = kolor % 256
+        ile += 1
+        kolor -= 12
+    return Image.fromarray(tab)
+
+obrazek1 = fun1(200, 200, 5, 255)
+obrazek1.save("obraz1_1.jpg")
+obrazek1.save("obraz1_1.png")
+
+def fun2(w, h, grub, kolor):
+    t = (h, w)
+    tab = np.ones(t, dtype=np.uint8)
+    ile = int(w / grub)
+    for k in range(ile):
+        for g in range(grub):
+            i = k * grub + g
+            for j in range(h):
+                tab[j, i] = kolor % 256
+        kolor -= 12
+    return Image.fromarray(tab)
+
+
+obrazek2 = fun2(200, 200, 10, 10)
+obrazek2.save("obraz1_2.jpg")
+obrazek2.save("obraz1_2.png")
+
+
+def negatyw_szary(obraz):
+    tab = np.asarray(obraz)
+    h, w = tab.shape
+    tab_neg = tab.copy()
+    for i in range(h):
+        for j in range(w):
+            tab_neg[i, j] = 255 - tab[i, j]
+    return Image.fromarray(tab_neg)
+
+obrazek1_n = negatyw_szary(obrazek1)
+obrazek1_n.save("obraz1_1N.jpg")
+obrazek1_n.save("obraz1_1N.png")
+
+obrazek2_n = negatyw_szary(obrazek2)
+obrazek2_n.save("obraz1_2N.jpg")
+obrazek2_n.save("obraz1_2N.png")
+
+# zadanie 2
+
+def fun1_kolor(w, h, grub, kolor):
+    t = (h, w, 3)
+    tab = np.zeros(t, dtype=np.uint8)
+    ile = 0
+    m = min(w, h)
+    dokad = int(m / (2 * grub))
+    r = kolor[0]
+    g = kolor[1]
+    b = kolor[2]
+    for i in range(0, dokad):
+        tab[ile * grub: h - (ile * grub), ile * grub: w - (ile * grub)] = [r, g, b]
+        ile += 1
+        b = (b + 5)
+        if (b >= 255):
+            b = 255
+    return Image.fromarray(tab)
+
+
+obrazek1_kolor = fun1_kolor(300, 300, 4, [100, 0, 100])
+obrazek1_kolor.save("obraz2.png")
+obrazek1_kolor.save("obraz2.jpg")
+
+def negatyw_kolor(obraz):
+    tab = np.asarray(obraz)
+    h, w = tab.shape
+    tab_neg = tab.copy()
+    for i in range(h):
+        for j in range(w):
+            kolor = tab[i][j]
+            r = kolor[0]
+            g = kolor[1]
+            b = kolor[2]
+            tab_neg[i, j] = [255 - r, 255 - g, 255-b]
+    return Image.fromarray(tab_neg)
+
+obrazek2_n = negatyw_kolor(obrazek2)
